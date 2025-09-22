@@ -1,28 +1,34 @@
-const express = require("express")
-const cors = require("cors")
-const mongoose = require ("mongoose")
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+require("dotenv").config(); // Load env variables first
+
 const app = express();
-const PORT =  process.env.PORT || 5000;
-app.use(cors())
-app.use(express.json())
-require("dotenv").config()
+const PORT = process.env.PORT || 5000;
 
-const connectedDb = async()=>{
-    try {
-        await mongoose.connect(process.env.MONGO_URL);
-        console.log("DB Connected Successfully!")
-    } catch (error) {
-         console.log("Error connected Db", error)
-        process.exit(1)
-    }
-}
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-app.use("/", async(req, res)=>{
-  console.log(`Server Running on Port ${PORT}`)    
-})
+// Connect DB
+const connectedDb = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("✅ DB Connected Successfully!");
+  } catch (error) {
+    console.error("❌ Error connecting to DB:", error.message);
+    process.exit(1);
+  }
+};
 
-connectedDb().then(()=>{
-    app.listen(PORT, ()=>{
-       console.log(`Server Running on Port ${PORT}`) 
-    })
-})
+// Routes
+app.get("/", (req, res) => {
+  res.send("🚀 PrintX Backend is running!");
+});
+
+// Start server
+connectedDb().then(() => {
+  app.listen(PORT, () => {
+    console.log(`✅ Server Running on Port ${PORT}`);
+  });
+});

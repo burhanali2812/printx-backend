@@ -27,8 +27,8 @@ const connectedDb = async () => {
 app.get("/", (req, res) => {
   res.send("🚀 PrintX Backend is running!");
 });
-app.use("/printx/users", UserRoutes);
-app.use("/printx/shopkeepers", ShopKeeperRoutes);
+app.use("/printx/user", UserRoutes);
+app.use("/printx/shopkeeper", ShopKeeperRoutes);
 
 // Start server
 connectedDb().then(() => {

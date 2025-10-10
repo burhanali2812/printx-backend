@@ -12,7 +12,7 @@ router.post("/register", async (req, res) => {
     try {
         let user = await User.findOne({ email: email });
         if (user) {
-            return res.status(400).json({ message: "User already exists" });
+            return res.status(400).json({success : false, message: "User already exists" });
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -20,7 +20,7 @@ router.post("/register", async (req, res) => {
             name, email, password: hashedPassword, role
         });
         await user.save();  
-        res.status(201).json({ message: "User registered successfully" });
+        res.status(201).json({success : true,  message: "User registered successfully" });
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Server error");
